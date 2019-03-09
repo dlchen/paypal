@@ -1,18 +1,19 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
+import TransactionRow from './TransactionRow';
 // import './SendMoney.css';
 
 const mockTransactions = [
   {
     name: "John Smith",
-    date: new Date(Date.UTC(2018, 3, 8)),
+    date: new Date(Date.UTC(2018, 2, 8)),
     amount: 123.45,
     currency: 'USD'
   },
   {
     name: "Toys R Us",
-    date: new Date(Date.UTC(2012, 3, 8)),
+    date: new Date(Date.UTC(2012, 11, 31)),
     amount: 1123.45,
     currency: 'USD'
   }
@@ -20,17 +21,21 @@ const mockTransactions = [
 
 class ViewHistory extends Component {
   render() {
+    const transactionRows = mockTransactions.map((row, idx) => (
+      <TransactionRow
+        date={row.date}
+        amount={row.amount}
+        currency={row.currency}
+        name={row.name}
+        key={idx} />
+    ));
     return (
       <div>
         <header>Transaction History</header>
         <div className="content">
           <table>
             <tbody>
-              <tr>
-                <td>12/5/2018</td>
-                <td>John Smith</td>
-                <td>$123.45</td>
-              </tr>
+              {transactionRows}
             </tbody>
           </table>
         </div>
