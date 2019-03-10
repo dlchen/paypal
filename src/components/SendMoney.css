@@ -1,0 +1,21 @@
+form {
+  display: grid;
+  padding: 3em;
+}
+
+label {
+  text-align: left;
+}
+
+textarea {
+  text-align: left;
+}
+
+input {
+  text-align: left;
+}
+
+span {
+  text-align: left;
+  display: block;
+}

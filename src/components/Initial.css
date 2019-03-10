@@ -2,6 +2,11 @@
   display: grid;
 }
 
+header {
+  padding: 1em;
+}
+
 footer {
+  padding: 1em;
   height: 1em;
 }
