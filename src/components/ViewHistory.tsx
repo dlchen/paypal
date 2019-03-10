@@ -4,24 +4,35 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import TransactionRow from './TransactionRow';
 // import './SendMoney.css';
 
-const mockTransactions = [
-  {
-    name: "John Smith",
-    date: new Date(Date.UTC(2018, 2, 8)),
-    amount: 123.45,
-    currency: 'USD'
-  },
-  {
-    name: "Toys R Us",
-    date: new Date(Date.UTC(2012, 11, 31)),
-    amount: 1123.45,
-    currency: 'USD'
-  }
-];
+import mockTransactions from './mockTransactions.json';
 
-class ViewHistory extends Component {
+type Transaction = {
+  name: string,
+  date: string,
+  amount: number,
+  currency: string
+};
+
+type State = {
+  transactions: Array<Transaction>
+};
+
+class ViewHistory extends Component<{}, State> {
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      transactions: []
+    };
+  }
+  componentDidMount() {
+    const mockFetch = new Promise((resolve, reject) => {
+      resolve(mockTransactions);
+    });
+    mockFetch.then(data => this.setState(data));
+  }
   render() {
-    const transactionRows = mockTransactions.map((row, idx) => (
+    const transactionRows = this.state.transactions.map((row, idx) => (
       <TransactionRow
         date={row.date}
         amount={row.amount}

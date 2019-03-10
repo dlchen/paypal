@@ -1,0 +1,16 @@
+{
+  "transactions": [
+    {
+      "name": "John Smith",
+      "date": "2018-3-30",
+      "amount": 123.45,
+      "currency": "USD"
+    },
+    {
+      "name": "Toys R Us",
+      "date": "2012-11-31",
+      "amount": 1123.45,
+      "currency": "USD"
+    }
+  ]
+}

@@ -9,7 +9,7 @@ const symbol: Currency = {
 };
 
 interface TransactionProps {
-  date: Date,
+  date: string,
   amount: number,
   currency: string,
   name: string
@@ -19,7 +19,7 @@ const TransactionRow = ({ date, name, currency, amount } : TransactionProps) => 
 
   return (
     <tr>
-      <td>{date.toLocaleDateString("en-US")}</td>
+      <td>{new Date(date).toLocaleDateString("en-US")}</td>
       <td>{name}</td>
       <td>{symbol[currency]}{amount}</td>
     </tr>
