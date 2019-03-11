@@ -40,6 +40,7 @@ class Initial extends Component<{}, State> {
     this.handleCurrencySelect = this.handleCurrencySelect.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.resetForm = this.resetForm.bind(this);
   }
   handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
     // TODO: add email validation
@@ -68,6 +69,15 @@ class Initial extends Component<{}, State> {
       const type: TransactionType = value;
       this.setState({ transactionType: type })
     }
+  }
+  resetForm() {
+    this.setState({
+      email: '',
+      currency: 'USD',
+      amount: '',
+      message: '',
+      transactionType: PERSONAL
+    });
   }
   render() {
     return (
@@ -109,7 +119,7 @@ class Initial extends Component<{}, State> {
           </label>
         </form>
         <footer>
-          <div>Clear</div>
+          <div onClick={this.resetForm}>Clear</div>
           <div>Next</div>
         </footer>
       </div>
