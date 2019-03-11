@@ -11,7 +11,8 @@ const renderCurrencySymbol = (currency: string) => {
   };
 }
 
-type TransactionType = 'PERSONAL' | 'BUSINESS';
+type TransactionType = 'UNKNOWN' | 'PERSONAL' | 'BUSINESS';
+const UNKNOWN = 'UNKNOWN';
 const PERSONAL = 'PERSONAL';
 const BUSINESS = 'BUSINESS';
 
@@ -34,7 +35,7 @@ class Initial extends Component<{}, State> {
       currency: 'USD',
       amount: '',
       message: '',
-      transactionType: PERSONAL
+      transactionType: UNKNOWN
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -80,7 +81,7 @@ class Initial extends Component<{}, State> {
       currency: 'USD',
       amount: '',
       message: '',
-      transactionType: PERSONAL
+      transactionType: UNKNOWN
     });
   }
   submitForm() {
