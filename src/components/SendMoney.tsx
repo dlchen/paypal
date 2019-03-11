@@ -16,6 +16,7 @@ const PERSONAL = 'PERSONAL';
 const BUSINESS = 'BUSINESS';
 
 type State = {
+  success: boolean,
   email: string,
   currency: string,
   amount: string,
@@ -28,6 +29,7 @@ class Initial extends Component<{}, State> {
     super(props);
 
     this.state = {
+      success: false,
       email: '',
       currency: 'USD',
       amount: '',
@@ -41,6 +43,8 @@ class Initial extends Component<{}, State> {
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
     this.resetForm = this.resetForm.bind(this);
+    this.submitForm = this.submitForm.bind(this);
+    this.restart = this.restart.bind(this);
   }
   handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
     // TODO: add email validation
@@ -79,11 +83,18 @@ class Initial extends Component<{}, State> {
       transactionType: PERSONAL
     });
   }
+  submitForm() {
+    this.setState({ success: true });
+  }
+  restart() {
+    this.resetForm();
+    this.setState({ success: false });
+  }
   render() {
     return (
       <div>
         <header>Send Money</header>
-        <form>
+        {!this.state.success && <form id="send-money">
           <label>
             To: <input type="email" value={this.state.email} onChange={this.handleEmailChange} autoFocus />
           </label>
@@ -117,10 +128,15 @@ class Initial extends Component<{}, State> {
               onChange={this.handleOptionChange}
               checked={this.state.transactionType === BUSINESS} />
           </label>
-        </form>
+        </form>}
+        {this.state.success && <div className="success">
+          You have sent {renderCurrencySymbol(this.state.currency)}{this.state.amount} to {this.state.email}!
+        </div>}
         <footer>
-          <div onClick={this.resetForm}>Clear</div>
-          <div>Next</div>
+          {!this.state.success && <div onClick={this.resetForm}>Clear</div>}
+          {!this.state.success && <div onClick={this.submitForm}>Next</div>}
+          {this.state.success && <div onClick={this.restart}>Send Money</div>}
+          {this.state.success && <Link to="/view">Transaction History</Link>}
         </footer>
       </div>
     );
