@@ -2,7 +2,6 @@ import React, { Component, ChangeEvent } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 
 import './SendMoney.css';
-import { symbol } from 'prop-types';
 
 const renderCurrencySymbol = (currency: string) => {
   switch (currency) {
@@ -110,7 +109,8 @@ class Initial extends Component<{}, State> {
           </label>
         </form>
         <footer>
-          <Link to="/">Back</Link>
+          <div>Clear</div>
+          <div>Next</div>
         </footer>
       </div>
     );

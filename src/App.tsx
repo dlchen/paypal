@@ -6,7 +6,15 @@ import Initial from './components/Initial';
 import SendMoney from './components/SendMoney';
 import ViewHistory from './components/ViewHistory';
 
-class App extends Component {
+type Props = {
+  hideLoading: () => void;
+  showLoading: () => void;
+};
+
+class App extends Component<Props,{}> {
+  componentDidMount() {
+    this.props.hideLoading();
+  }
   render() {
     return (
       <Router>
