@@ -11,6 +11,52 @@ const renderCurrencySymbol = (currency: string) => {
   };
 }
 
+const validAmount = (amount: string) => {
+
+  // TODO: add logic
+  return Number(amount) > 0;
+};
+
+const validEmail = (email: string) => {
+
+  const MAX_LENGTH_LOCAL = 64;
+  const MAX_LENGTH_DOMAIN = 255;
+
+  // return false if no '@' or 2 or more '@'
+  const splitAt = email.split('@');
+  if (splitAt.length === 1 || splitAt.length > 2) {
+    return false;
+  }
+
+  const [local, domain] = splitAt;
+
+  if (local.length === 0 ||
+      local.length > MAX_LENGTH_LOCAL ||
+      domain.length === 0 ||
+      domain.length > MAX_LENGTH_DOMAIN) {
+    return false;
+  }
+
+  if (!/\S+/.test(local)) {
+    return false;
+  }
+
+  // return false if no '.' or 2 or more '.' in domain
+  const domainSplit = domain.split('.');
+  if (domainSplit.length === 1 || domainSplit.length > 2) {
+    return false;
+  }
+
+  const [host, tld] = domainSplit;
+
+  const domainRegex = /^[A-Za-z0-9\-]+$/;
+  if (!domainRegex.test(host) || !domainRegex.test(tld)) {
+    return false;
+  }
+
+  return true;
+};
+
 type TransactionType = 'UNKNOWN' | 'PERSONAL' | 'BUSINESS';
 const UNKNOWN = 'UNKNOWN';
 const PERSONAL = 'PERSONAL';
@@ -18,6 +64,7 @@ const BUSINESS = 'BUSINESS';
 
 type State = {
   success: boolean,
+  validEmail: boolean | null,
   email: string,
   currency: string,
   amount: string,
@@ -31,6 +78,7 @@ class Initial extends Component<{}, State> {
 
     this.state = {
       success: false,
+      validEmail: null,
       email: '',
       currency: 'USD',
       amount: '',
@@ -38,6 +86,7 @@ class Initial extends Component<{}, State> {
       transactionType: UNKNOWN
     };
 
+    this.emailOnBlur = this.emailOnBlur.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
     this.handleCurrencySelect = this.handleCurrencySelect.bind(this);
@@ -46,6 +95,9 @@ class Initial extends Component<{}, State> {
     this.resetForm = this.resetForm.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.restart = this.restart.bind(this);
+  }
+  emailOnBlur() {
+    this.setState({ validEmail: validEmail(this.state.email) });
   }
   handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
     // TODO: add email validation
@@ -77,6 +129,7 @@ class Initial extends Component<{}, State> {
   }
   resetForm() {
     this.setState({
+      validEmail: null,
       email: '',
       currency: 'USD',
       amount: '',
@@ -85,7 +138,9 @@ class Initial extends Component<{}, State> {
     });
   }
   submitForm() {
-    this.setState({ success: true });
+    if (validEmail(this.state.email) && validAmount(this.state.amount)) {
+      this.setState({ success: true });
+    }
   }
   restart() {
     this.resetForm();
@@ -97,7 +152,9 @@ class Initial extends Component<{}, State> {
         <header>Send Money</header>
         {!this.state.success && <form id="send-money">
           <label>
-            To: <input type="email" value={this.state.email} onChange={this.handleEmailChange} autoFocus />
+            To: <input type="email" value={this.state.email} onChange={this.handleEmailChange} onBlur={this.emailOnBlur} autoFocus />
+            {this.state.validEmail === true && "✔︎"}
+            {this.state.validEmail === false && "✘"}
           </label>
           <label>
             Amount: {renderCurrencySymbol(this.state.currency)}
