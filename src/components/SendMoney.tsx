@@ -11,6 +11,23 @@ const renderCurrencySymbol = (currency: string) => {
   };
 }
 
+const trimLeadingZeros = (amount: string) => {
+
+  let trimIdx;
+  for (trimIdx = 0; trimIdx < amount.length - 1; trimIdx++) {
+
+    if (amount[trimIdx] !== '0') {
+      break;
+    }
+  }
+
+  if (amount[trimIdx] === '.') {
+    trimIdx--;
+  }
+
+  return amount.substring(trimIdx);
+}
+
 const validAmount = (amount: string) => {
 
   // TODO: add logic
@@ -88,7 +105,7 @@ class Initial extends Component<{}, State> {
 
     this.emailOnBlur = this.emailOnBlur.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handleCurrencyChange = this.handleCurrencyChange.bind(this);
+    this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleCurrencySelect = this.handleCurrencySelect.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
@@ -103,15 +120,16 @@ class Initial extends Component<{}, State> {
     // TODO: add email validation
     this.setState({ email: event.currentTarget.value });
   }
-  handleCurrencyChange(event: ChangeEvent<HTMLInputElement>) {
+  handleAmountChange(event: ChangeEvent<HTMLInputElement>) {
     const input = event.currentTarget.value;
     if (input === '') {
       this.setState({ amount: '' });
     }
-    else if (!input.includes('-')) {
+    else if (/^\d*\.?\d{0,2}$/.test(input)) {
+
+      const trimmed = trimLeadingZeros(input);
       // TODO: add commas at correct place
-      const firstMatch = /\d+\.?\d{0,2}/.exec(input);
-      this.setState({ amount: firstMatch ? firstMatch[0] : this.state.amount });
+      this.setState({ amount: trimmed });
     }
   }
   handleCurrencySelect(event: ChangeEvent<HTMLSelectElement>) {
@@ -158,7 +176,7 @@ class Initial extends Component<{}, State> {
           </label>
           <label>
             Amount: {renderCurrencySymbol(this.state.currency)}
-            <input type="text" value={this.state.amount} onChange={this.handleCurrencyChange} />
+            <input type="text" value={this.state.amount} onChange={this.handleAmountChange} />
             <select value={this.state.currency} onChange={this.handleCurrencySelect}>
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
