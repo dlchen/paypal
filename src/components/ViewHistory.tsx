@@ -24,11 +24,15 @@ class ViewHistory extends Component<{}, State> {
       transactions: []
     };
   }
-  componentDidMount() {
-    const mockFetch = new Promise((resolve, reject) => {
-      resolve(mockTransactions);
-    });
-    mockFetch.then(data => this.setState(data));
+  async componentDidMount() {
+    try {
+      const response = await fetch('/v1/transactions');
+      const data = await response.json();
+      this.setState(data);
+    }
+    catch (error) {
+      console.error(error);
+    }
   }
   render() {
     const transactionRows = this.state.transactions.map((row, idx) => (
