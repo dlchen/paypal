@@ -74,6 +74,38 @@ const validEmail = (email: string) => {
   return true;
 };
 
+const insertCommas = (wholeNum: number): string => {
+
+  let str = String(wholeNum);
+
+  const decimalIdx = str.indexOf('.');
+  let decimals = '';
+
+  if (decimalIdx !== -1) {
+    decimals = str.substring(decimalIdx);
+    str = str.substring(0, decimalIdx);
+  }
+
+  const commaHelper = (acc: string, str: string, count: number): string => {
+
+    const head = str && str[0];
+
+    if (!head) return acc;
+
+    const tail = str.slice(1);
+
+    if (count === 1 && tail) {
+      return commaHelper(acc + head + ',', tail, 3);
+    }
+
+    return commaHelper(acc + head, tail, count - 1);
+  };
+
+  const withCommas = commaHelper('', str, str.length % 3 || 3);
+
+  return withCommas + decimals;
+};
+
 type TransactionType = 'UNKNOWN' | 'PERSONAL' | 'BUSINESS';
 const UNKNOWN = 'UNKNOWN';
 const PERSONAL = 'PERSONAL';
