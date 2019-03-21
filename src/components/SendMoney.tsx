@@ -28,10 +28,10 @@ const trimLeadingZeros = (amount: string) => {
   return amount.substring(trimIdx);
 }
 
-const validAmount = (amount: string) => {
+const validAmount = (amount: number) => {
 
   // TODO: add logic
-  return Number(amount) > 0;
+  return amount > 0;
 };
 
 const validEmail = (email: string) => {
@@ -116,7 +116,10 @@ type State = {
   validEmail: boolean | null,
   email: string,
   currency: string,
-  amount: string,
+  amountInteger: number,
+  amountDecimal: number | null,
+  decimal: boolean,
+  displayAmount: string,
   message: string,
   transactionType: TransactionType
 };
@@ -130,7 +133,10 @@ class Initial extends Component<{}, State> {
       validEmail: null,
       email: '',
       currency: 'USD',
-      amount: '',
+      amountInteger: 0,
+      amountDecimal: null,
+      decimal: false,
+      displayAmount: '0',
       message: '',
       transactionType: UNKNOWN
     };
@@ -153,16 +159,88 @@ class Initial extends Component<{}, State> {
     this.setState({ email: event.currentTarget.value });
   }
   handleAmountChange(event: ChangeEvent<HTMLInputElement>) {
-    const input = event.currentTarget.value;
-    if (input === '') {
-      this.setState({ amount: '' });
-    }
-    else if (/^\d*\.?\d{0,2}$/.test(input)) {
 
-      const trimmed = trimLeadingZeros(input);
-      // TODO: add commas at correct place
-      this.setState({ amount: trimmed });
+    const input = event.currentTarget.value;
+
+    if (input === '') {
+      return this.setState({
+        amountInteger: 0,
+        amountDecimal: null,
+        decimal: false,
+        displayAmount: '0'
+      });
     }
+
+    // debugger;
+    const length = input.length;
+    const lastChar = input[length - 1];
+
+    // const lastDisplayChar = this.state.displayAmount[this.state.displayAmount.length - 1];
+    // if (lastChar === '.' && !input.match(/\.\./)) {
+    //   return this.setState({ displayAmount: input });
+    // }
+
+    console.log(lastChar);
+    if (lastChar === '.' && !this.state.decimal) {
+
+      return this.setState({
+        decimal: true,
+        displayAmount: this.state.displayAmount + '.'
+      });
+    }
+    else if (this.state.displayAmount.match(/\.\d\d$/) && this.state.decimal) {
+
+    }
+    else if (lastChar.match(/\d/) && this.state.decimal) {
+
+      return this.setState({
+        amountDecimal: Number(lastChar),
+        displayAmount: this.state.displayAmount + lastChar
+      });
+    }
+    else if (lastChar.match(/\d|\,/)) {
+
+      // console.log('lastChar', lastChar)
+      // console.log('lastDisplayChar', lastDisplayChar)
+      // if (lastDisplayChar !== '.' && lastChar === '.') {
+      //   return this.setState({ displayAmount: this.state.displayAmount + '.' });
+      // }
+
+      const num = Number(input.replace(/\,/g, ''));
+
+      // console.log(num, !Number.isNaN(num));
+
+      if (!Number.isNaN(num)) {
+
+        const withCommas = insertCommas(num);
+        console.log('withCommas', withCommas);
+        return this.setState({ amountInteger: num, displayAmount: withCommas });
+      }
+    }
+    // const inputNoCommas = event.currentTarget.value.replace(',', '');
+    // const num = Number(inputNoCommas);
+    // console.log('inputNoCommas', inputNoCommas, num)
+    // if (inputNoCommas === '') {
+    //   this.setState({ amount: 0, displayAmount: '0' });
+    // }
+    // if (!Number.isNaN(num)) {
+
+    //   const withCommas = insertCommas(num);
+    //   this.setState({ amount: num, displayAmount: withCommas });
+    // }
+    // else {
+
+    // }
+    // else if (/^(\d+|\d{1,3}(,\d{3})*)(\.\d+)?$/.test(inputNoCommas)) {
+    // // else if (typeof num === 'number') {
+
+    //   const trimmed = trimLeadingZeros(inputNoCommas);
+    //   console.log('trimmed', trimmed);
+    //   const withCommas = insertCommas(num);
+    //   console.log('withCommas', withCommas);
+    //   // TODO: add commas at correct place
+    //   this.setState({ amount: num, displayAmount: withCommas });
+    // }
   }
   handleCurrencySelect(event: ChangeEvent<HTMLSelectElement>) {
     this.setState({ currency: event.currentTarget.value });
@@ -182,13 +260,14 @@ class Initial extends Component<{}, State> {
       validEmail: null,
       email: '',
       currency: 'USD',
-      amount: '',
+      amountInteger: 0,
+      displayAmount: '0',
       message: '',
       transactionType: UNKNOWN
     });
   }
   submitForm() {
-    if (validEmail(this.state.email) && validAmount(this.state.amount)) {
+    if (validEmail(this.state.email) && validAmount(this.state.amountInteger)) {
       this.setState({ success: true });
     }
   }
@@ -208,7 +287,7 @@ class Initial extends Component<{}, State> {
           </label>
           <label>
             Amount: {renderCurrencySymbol(this.state.currency)}
-            <input type="text" value={this.state.amount} onChange={this.handleAmountChange} />
+            <input type="text" value={this.state.displayAmount} onChange={this.handleAmountChange} />
             <select value={this.state.currency} onChange={this.handleCurrencySelect}>
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
@@ -238,7 +317,7 @@ class Initial extends Component<{}, State> {
           </label>
         </form>}
         {this.state.success && <div className="success">
-          You have sent {renderCurrencySymbol(this.state.currency)}{this.state.amount} to {this.state.email}!
+          You have sent {renderCurrencySymbol(this.state.currency)}{this.state.displayAmount} to {this.state.email}!
         </div>}
         <footer>
           {!this.state.success && <div onClick={this.resetForm}>Clear</div>}
