@@ -16,12 +16,13 @@ class App extends Component<Props,{}> {
     this.props.hideLoading();
   }
   render() {
+    const { hideLoading, showLoading } = this.props;
     return (
       <Router>
         <div>
-          <Route path="/" exact component={Initial}></Route>
-          <Route path="/send" component={SendMoney}></Route>
-          <Route path="/view" component={ViewHistory}></Route>
+          <Route path="/" exact component={Initial} />
+          <Route path="/send" render={(props) => <SendMoney {...props} hideLoading={hideLoading} showLoading={showLoading} />} />
+          <Route path="/view" component={ViewHistory} />
         </div>
       </Router>
     );

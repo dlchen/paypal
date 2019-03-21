@@ -111,6 +111,11 @@ const UNKNOWN = 'UNKNOWN';
 const PERSONAL = 'PERSONAL';
 const BUSINESS = 'BUSINESS';
 
+type Props = {
+  hideLoading: () => void;
+  showLoading: () => void;
+};
+
 type State = {
   success: boolean,
   validEmail: boolean | null,
@@ -118,10 +123,10 @@ type State = {
   currency: string,
   amount: string,
   message: string,
-  transactionType: TransactionType
+  transactionType: TransactionType,
 };
 
-class Initial extends Component<{}, State> {
+class Initial extends Component<Props, State> {
   constructor(props: any) {
     super(props);
 
@@ -189,7 +194,11 @@ class Initial extends Component<{}, State> {
   }
   submitForm() {
     if (validEmail(this.state.email) && validAmount(this.state.amount)) {
-      this.setState({ success: true });
+      this.props.showLoading();
+      setTimeout(() => {
+        this.props.hideLoading();
+        this.setState({ success: true });
+      }, 500);
     }
   }
   restart() {
