@@ -11,27 +11,10 @@ const renderCurrencySymbol = (currency: string) => {
   };
 }
 
-const trimLeadingZeros = (amount: string) => {
-
-  let trimIdx;
-  for (trimIdx = 0; trimIdx < amount.length - 1; trimIdx++) {
-
-    if (amount[trimIdx] !== '0') {
-      break;
-    }
-  }
-
-  if (amount[trimIdx] === '.') {
-    trimIdx--;
-  }
-
-  return amount.substring(trimIdx);
-}
-
 const validAmount = (amount: string) => {
 
-  // TODO: add logic
-  return Number(amount) > 0;
+  const noCommas = amount.replace(/,/g, '');
+  return Number(noCommas) > 0;
 };
 
 const validEmail = (email: string) => {
@@ -74,17 +57,13 @@ const validEmail = (email: string) => {
   return true;
 };
 
-const insertCommas = (wholeNum: number): string => {
+const insertCommas = (wholeNum: number, { offset } = { offset: 0 }): string => {
 
-  let str = String(wholeNum);
+  const stringified = String(wholeNum);
 
-  const decimalIdx = str.indexOf('.');
-  let decimals = '';
-
-  if (decimalIdx !== -1) {
-    decimals = str.substring(decimalIdx);
-    str = str.substring(0, decimalIdx);
-  }
+  const decimalIdx = stringified.length - offset;
+  const decimals = stringified.slice(decimalIdx);
+  const whole = stringified.slice(0, decimalIdx);
 
   const commaHelper = (acc: string, str: string, count: number): string => {
 
@@ -101,9 +80,32 @@ const insertCommas = (wholeNum: number): string => {
     return commaHelper(acc + head, tail, count - 1);
   };
 
-  const withCommas = commaHelper('', str, str.length % 3 || 3);
+  const withCommas = commaHelper('', whole, whole.length % 3 || 3);
 
   return withCommas + decimals;
+};
+
+const formatAmount = (digits: string) => {
+
+  const parsed = parseInt(digits, 10);
+
+  if (parsed === 0) {
+    return '0.00';
+  }
+
+  const stringified = String(parsed);
+  if (stringified.length <= 3) {
+    let padded = stringified;
+    while (padded.length < 3) {
+      padded = '0' + padded;
+    }
+    return padded.slice(0, 1) + '.' + padded.slice(1);
+  }
+
+  const withCommas = insertCommas(parsed, { offset: 2 });
+  const decimalIdx = withCommas.length - 2;
+  const withDecimal = withCommas.slice(0, decimalIdx) + '.' + withCommas.slice(decimalIdx);
+  return withDecimal;
 };
 
 type TransactionType = 'UNKNOWN' | 'PERSONAL' | 'BUSINESS';
@@ -135,7 +137,7 @@ class Initial extends Component<Props, State> {
       validEmail: null,
       email: '',
       currency: 'USD',
-      amount: '',
+      amount: '0.00',
       message: '',
       transactionType: UNKNOWN
     };
@@ -154,19 +156,17 @@ class Initial extends Component<Props, State> {
     this.setState({ validEmail: validEmail(this.state.email) });
   }
   handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
-    // TODO: add email validation
     this.setState({ email: event.currentTarget.value });
   }
   handleAmountChange(event: ChangeEvent<HTMLInputElement>) {
     const input = event.currentTarget.value;
     if (input === '') {
-      this.setState({ amount: '' });
+      return this.setState({ amount: '0.00' });
     }
-    else if (/^\d*\.?\d{0,2}$/.test(input)) {
-
-      const trimmed = trimLeadingZeros(input);
-      // TODO: add commas at correct place
-      this.setState({ amount: trimmed });
+    const digits = input.replace(/[,|.]/g, '');
+    if (digits.match(/^\d+$/)) {
+      const format = formatAmount(digits);
+      this.setState({ amount: format });
     }
   }
   handleCurrencySelect(event: ChangeEvent<HTMLSelectElement>) {
