@@ -246,7 +246,7 @@ class Initial extends Component<Props, State> {
               checked={this.state.transactionType === BUSINESS} />
           </label>
         </form>}
-        {this.state.success && <div className="success">
+        {this.state.success && <div className="content">
           You have sent {renderCurrencySymbol(this.state.currency)}{this.state.amount} to {this.state.email}!
         </div>}
         <footer>
