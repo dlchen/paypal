@@ -7,9 +7,9 @@ class Initial extends PureComponent {
     return (
       <div>
         <header>What are we Doing?</header>
-        <div className="content">
-          <Link to="/send">Send Money</Link>
-          <Link to="/view">View Transaction History</Link>
+        <div className="initial content">
+          <Link to="/send" className="action">Send Money</Link>
+          <Link to="/view" className="action">View Transaction History</Link>
         </div>
         <footer></footer>
       </div>
