@@ -30,13 +30,13 @@ class Form extends PureComponent<Props> {
     return (
       <Fragment>
         <form id="send-money">
-          <label className="email">
+          <div className="email padded form-field">
             <span>To:</span>
             <input type="email" value={this.props.email} onChange={this.props.handleEmailChange} autoFocus />
             {this.props.validEmail === true && "✔︎"}
             {this.props.validEmail === false && "✘"}
-          </label>
-          <label className="amount">
+          </div>
+          <div className="amount padded form-field">
             <span>Amount:</span>
             {renderCurrencySymbol(this.props.currency)}
             <input type="text" value={this.props.amount} onChange={this.props.handleAmountChange} />
@@ -45,30 +45,32 @@ class Form extends PureComponent<Props> {
               <option value="EUR">EUR</option>
               <option value="JPY">JPY</option>
             </select>
-          </label>
-          <label>
+          </div>
+          <div className="padded form-field">
             <span>Message (optional):</span>
             <textarea value={this.props.message} onChange={this.props.handleMessageChange} />
-          </label>
+          </div>
           <span>What's this payment for?</span>
-          <label>
-            <input
-              type="radio"
-              name="transactionType"
-              value={PERSONAL}
-              onChange={this.props.handleOptionChange}
-              checked={this.props.transactionType === PERSONAL} />
-            I'm sending money to family or friends
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="transactionType"
-              value={BUSINESS}
-              onChange={this.props.handleOptionChange}
-              checked={this.props.transactionType === BUSINESS} />
-              I'm paying for goods or services
-          </label>
+          <div className="padded form-field radio">
+            <label className="type">
+              <span>I'm sending money to family or friends</span>
+              <input
+                type="radio"
+                name="transactionType"
+                value={PERSONAL}
+                onChange={this.props.handleOptionChange}
+                checked={this.props.transactionType === PERSONAL} />
+            </label>
+            <label className="type">
+              <span>I'm paying for goods or services</span>
+              <input
+                type="radio"
+                name="transactionType"
+                value={BUSINESS}
+                onChange={this.props.handleOptionChange}
+                checked={this.props.transactionType === BUSINESS} />
+            </label>
+          </div>
         </form>
         <footer>
           <div onClick={this.props.resetForm}>Clear</div>

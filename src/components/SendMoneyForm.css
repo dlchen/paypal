@@ -1,25 +1,30 @@
 #send-money {
-  border: 1px dashed red;
   display: flex;
   flex-direction: column;
 }
 
-label {
+.form-field {
   text-align: left;
   margin: 1em 0 0 0;
   border: 1px solid #333333;
   border-radius: 10px;
   background-color: #faf5ed;
+}
+
+.padded {
   padding: 0.5em;
 }
 
-label > span {
+.form-field > span {
   margin-right: 0.5em;
 }
 
 form {
-  display: grid;
   padding: 3em 1em;
+}
+
+form > span {
+  padding-top: 2em;
 }
 
 textarea {
@@ -66,4 +71,29 @@ select {
 .email {
   display: flex;
   align-items: baseline;
+}
+
+.type {
+  padding: 0.5em 0;
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.type > span {
+  padding-left: 0.5em;
+}
+
+.type > input {
+  margin-right: 0.5em;
+}
+
+.type:nth-child(2) {
+  border-top: 1px solid black;
+}
+
+.radio {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
 }
