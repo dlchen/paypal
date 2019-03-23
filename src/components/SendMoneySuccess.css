@@ -1,0 +1,15 @@
+.success {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.success-message {
+  padding-top: 8em;
+}
+
+.success-icon {
+  font-size: 5em;
+  color: #c68247;
+  padding: 0.4em;
+}

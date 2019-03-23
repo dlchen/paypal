@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { renderCurrencySymbol } from '../utils';
 
+import './SendMoneySuccess.css';
+
 type Props = {
   currency: string,
   amount: string,
@@ -16,8 +18,9 @@ class Success extends PureComponent<Props> {
     const { currency, amount, email, restart } = this.props;
     return (
       <Fragment>
-        <div className="content">
-          You have sent {renderCurrencySymbol(currency)}{amount} to {email}!
+        <div className="content success">
+          <div className="success-message">You have sent {renderCurrencySymbol(currency)}{amount} to {email}!</div>
+          <div className="success-icon">✔︎</div>
         </div>
         <footer>
           <div onClick={restart}>Send Money</div>
