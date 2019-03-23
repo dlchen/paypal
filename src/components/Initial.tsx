@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 import './Initial.css';
 
-class Initial extends Component {
+class Initial extends PureComponent {
   render() {
     return (
       <div>
