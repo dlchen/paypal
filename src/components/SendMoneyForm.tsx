@@ -53,7 +53,9 @@ class Form extends PureComponent<Props> {
           <span>What's this payment for?</span>
           <div className="padded form-field radio">
             <label className="type">
-              <span>I'm sending money to family or friends</span>
+              <span className={this.props.transactionType === PERSONAL ? "selected" : ""}>
+                I'm sending money to family or friends
+              </span>
               <input
                 type="radio"
                 name="transactionType"
@@ -62,7 +64,9 @@ class Form extends PureComponent<Props> {
                 checked={this.props.transactionType === PERSONAL} />
             </label>
             <label className="type">
-              <span>I'm paying for goods or services</span>
+              <span className={this.props.transactionType === BUSINESS ? "selected" : ""}>
+                I'm paying for goods or services
+              </span>
               <input
                 type="radio"
                 name="transactionType"

@@ -74,18 +74,19 @@ select {
 }
 
 .type {
-  padding: 0.5em 0;
+  padding: 1em 0;
   margin: 0;
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
 }
 
 .type > span {
-  padding-left: 0.5em;
+  padding-left: 1em;
 }
 
 .type > input {
-  margin-right: 0.5em;
+  margin-right: 1em;
 }
 
 .type:nth-child(2) {
@@ -101,4 +102,9 @@ select {
 select {
   font-size: medium;
   border: 1px solid black;
+}
+
+.selected {
+  font-weight: bold;
+  color: #c68247;
 }
