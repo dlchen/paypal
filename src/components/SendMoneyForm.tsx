@@ -1,5 +1,6 @@
 import React, { PureComponent, ChangeEvent, Fragment } from 'react';
-import { renderCurrencySymbol, validAmount, validEmail, formatAmount } from '../utils';
+import { renderCurrencySymbol } from '../utils';
+import './SendMoneyForm.css';
 
 type TransactionType = 'UNKNOWN' | 'PERSONAL' | 'BUSINESS';
 const PERSONAL = 'PERSONAL';
@@ -29,13 +30,15 @@ class Form extends PureComponent<Props> {
     return (
       <Fragment>
         <form id="send-money">
-          <label>
-            To: <input type="email" value={this.props.email} onChange={this.props.handleEmailChange} autoFocus />
+          <label className="email">
+            <span>To:</span>
+            <input type="email" value={this.props.email} onChange={this.props.handleEmailChange} autoFocus />
             {this.props.validEmail === true && "✔︎"}
             {this.props.validEmail === false && "✘"}
           </label>
-          <label>
-            Amount: {renderCurrencySymbol(this.props.currency)}
+          <label className="amount">
+            <span>Amount:</span>
+            {renderCurrencySymbol(this.props.currency)}
             <input type="text" value={this.props.amount} onChange={this.props.handleAmountChange} />
             <select value={this.props.currency} onChange={this.props.handleCurrencySelect}>
               <option value="USD">USD</option>
@@ -47,9 +50,10 @@ class Form extends PureComponent<Props> {
             <span>Message (optional):</span>
             <textarea value={this.props.message} onChange={this.props.handleMessageChange} />
           </label>
-          <label>What's this payment for?</label>
+          <span>What's this payment for?</span>
           <label>
-            <input type="radio"
+            <input
+              type="radio"
               name="transactionType"
               value={PERSONAL}
               onChange={this.props.handleOptionChange}
@@ -57,7 +61,8 @@ class Form extends PureComponent<Props> {
             I'm sending money to family or friends
           </label>
           <label>
-            <input type="radio"
+            <input
+              type="radio"
               name="transactionType"
               value={BUSINESS}
               onChange={this.props.handleOptionChange}

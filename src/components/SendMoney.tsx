@@ -4,8 +4,6 @@ import Form from './SendMoneyForm';
 import Success from './SendMoneySuccess';
 import { validAmount, validEmail, formatAmount } from '../utils';
 
-import './SendMoney.css';
-
 type TransactionType = 'UNKNOWN' | 'PERSONAL' | 'BUSINESS';
 const UNKNOWN = 'UNKNOWN';
 const PERSONAL = 'PERSONAL';

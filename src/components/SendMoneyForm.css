@@ -1,0 +1,69 @@
+#send-money {
+  border: 1px dashed red;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  text-align: left;
+  margin: 1em 0 0 0;
+  border: 1px solid #333333;
+  border-radius: 10px;
+  background-color: #faf5ed;
+  padding: 0.5em;
+}
+
+label > span {
+  margin-right: 0.5em;
+}
+
+form {
+  display: grid;
+  padding: 3em 1em;
+}
+
+textarea {
+  width: 100%;
+  font-size: medium;
+  text-align: left;
+  background-color: #faf5ed;
+  border: none;
+  resize: none;
+  height: 3em;
+  padding: 0.2em;
+}
+
+input {
+  font-size: medium;
+  text-align: left;
+  border: none;
+  background-color: #faf5ed;
+}
+
+span {
+  text-align: left;
+  display: block;
+}
+
+input[type="text"] {
+  flex-grow: 2;
+}
+
+input[type="email"] {
+  flex-grow: 2;
+  padding: 0.2em;
+}
+
+select {
+  justify-self: flex-end;
+}
+
+.amount {
+  display: flex;
+  align-items: baseline;
+}
+
+.email {
+  display: flex;
+  align-items: baseline;
+}
