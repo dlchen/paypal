@@ -97,3 +97,8 @@ select {
   flex-direction: column;
   padding: 0;
 }
+
+select {
+  font-size: medium;
+  border: 1px solid black;
+}
