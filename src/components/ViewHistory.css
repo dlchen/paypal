@@ -1,0 +1,12 @@
+tr {
+  display: flex;
+  justify-content: space-between;
+}
+
+tr:nth-child(even) {
+  background-color: #efebd7;
+}
+
+td {
+  margin: 0.5em 1em;
+}

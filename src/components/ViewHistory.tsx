@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import TransactionRow from './TransactionRow';
 
+import './ViewHistory.css';
+
 type Transaction = {
   name: string,
   date: string,

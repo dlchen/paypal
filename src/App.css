@@ -3,7 +3,8 @@ header {
   left: 0;
   width: 100%;
   text-align: center;
-  background-color: brown;
+  background-color: #5b360e;
+  background-image: linear-gradient(#5b360e, #432709);
   padding: 1em;
   color: white;
   font-weight: bold;
@@ -14,7 +15,8 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: brown;
+  background-color: #5b360e;
+  background-image: linear-gradient(#5b360e, #432709);
   padding: 1em;
   color: white;
   font-weight: bold;
