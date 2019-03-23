@@ -38,7 +38,6 @@ class Initial extends Component<Props, State> {
       transactionType: UNKNOWN
     };
 
-    this.emailOnBlur = this.emailOnBlur.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleAmountChange = this.handleAmountChange.bind(this);
     this.handleCurrencySelect = this.handleCurrencySelect.bind(this);
@@ -48,11 +47,11 @@ class Initial extends Component<Props, State> {
     this.submitForm = this.submitForm.bind(this);
     this.restart = this.restart.bind(this);
   }
-  emailOnBlur() {
-    this.setState({ validEmail: validEmail(this.state.email) });
-  }
   handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
-    this.setState({ email: event.currentTarget.value });
+    this.setState({
+      email: event.currentTarget.value,
+      validEmail: validEmail(event.currentTarget.value)
+    });
   }
   handleAmountChange(event: ChangeEvent<HTMLInputElement>) {
     const input = event.currentTarget.value;
@@ -107,7 +106,7 @@ class Initial extends Component<Props, State> {
         <header>Send Money</header>
         {!this.state.success && <form id="send-money">
           <label>
-            To: <input type="email" value={this.state.email} onChange={this.handleEmailChange} onBlur={this.emailOnBlur} autoFocus />
+            To: <input type="email" value={this.state.email} onChange={this.handleEmailChange} autoFocus />
             {this.state.validEmail === true && "✔︎"}
             {this.state.validEmail === false && "✘"}
           </label>
