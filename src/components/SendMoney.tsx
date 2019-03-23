@@ -1,6 +1,8 @@
-import React, { Component, ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
-import { renderCurrencySymbol, validAmount, validEmail, formatAmount } from '../utils';
+import React, { PureComponent, ChangeEvent } from 'react';
+
+import Form from './SendMoneyForm';
+import Success from './SendMoneySuccess';
+import { validAmount, validEmail, formatAmount } from '../utils';
 
 import './SendMoney.css';
 
@@ -24,8 +26,8 @@ type State = {
   transactionType: TransactionType,
 };
 
-class Initial extends Component<Props, State> {
-  constructor(props: any) {
+class SendMoney extends PureComponent<Props, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
@@ -101,58 +103,34 @@ class Initial extends Component<Props, State> {
     this.setState({ success: false });
   }
   render() {
+    const { validEmail, email, currency, amount, message, transactionType } = this.state;
     return (
       <div>
         <header>Send Money</header>
-        {!this.state.success && <form id="send-money">
-          <label>
-            To: <input type="email" value={this.state.email} onChange={this.handleEmailChange} autoFocus />
-            {this.state.validEmail === true && "✔︎"}
-            {this.state.validEmail === false && "✘"}
-          </label>
-          <label>
-            Amount: {renderCurrencySymbol(this.state.currency)}
-            <input type="text" value={this.state.amount} onChange={this.handleAmountChange} />
-            <select value={this.state.currency} onChange={this.handleCurrencySelect}>
-              <option value="USD">USD</option>
-              <option value="EUR">EUR</option>
-              <option value="JPY">JPY</option>
-            </select>
-          </label>
-          <label>
-            <span>Message (optional):</span>
-            <textarea value={this.state.message} onChange={this.handleMessageChange} />
-          </label>
-          <label>What's this payment for?</label>
-          <label>
-            I'm sending money to family or friends
-            <input type="radio"
-              name="transactionType"
-              value={PERSONAL}
-              onChange={this.handleOptionChange}
-              checked={this.state.transactionType === PERSONAL} />
-          </label>
-          <label>
-            I'm paying for goods or services
-            <input type="radio"
-              name="transactionType"
-              value={BUSINESS}
-              onChange={this.handleOptionChange}
-              checked={this.state.transactionType === BUSINESS} />
-          </label>
-        </form>}
-        {this.state.success && <div className="content">
-          You have sent {renderCurrencySymbol(this.state.currency)}{this.state.amount} to {this.state.email}!
-        </div>}
-        <footer>
-          {!this.state.success && <div onClick={this.resetForm}>Clear</div>}
-          {!this.state.success && <div onClick={this.submitForm}>Next</div>}
-          {this.state.success && <div onClick={this.restart}>Send Money</div>}
-          {this.state.success && <Link to="/view">Transaction History</Link>}
-        </footer>
+        {!this.state.success && <Form
+          validEmail={validEmail}
+          email={email}
+          currency={currency}
+          amount={amount}
+          message={message}
+          transactionType={transactionType}
+          handleEmailChange={this.handleEmailChange}
+          handleAmountChange={this.handleAmountChange}
+          handleCurrencySelect={this.handleCurrencySelect}
+          handleMessageChange={this.handleMessageChange}
+          handleOptionChange={this.handleOptionChange}
+          resetForm={this.resetForm}
+          submitForm={this.submitForm}
+          showLoading={this.props.showLoading}
+          hideLoading={this.props.hideLoading} />}
+        {this.state.success && <Success
+          currency={currency}
+          amount={amount}
+          email={email}
+          restart={this.restart}/>}
       </div>
     );
   }
 }
 
-export default Initial;
+export default SendMoney;

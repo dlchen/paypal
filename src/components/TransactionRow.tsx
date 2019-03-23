@@ -17,7 +17,7 @@ type TransactionProps = {
   name: string
 }
 
-const TransactionRow = ({ date, name, currency, amount } : TransactionProps) => {
+const TransactionRow = ({ date, name, currency, amount }: TransactionProps) => {
 
   return (
     <tr>

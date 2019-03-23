@@ -11,7 +11,7 @@ type Props = {
   showLoading: () => void;
 };
 
-class App extends Component<Props,{}> {
+class App extends Component<Props> {
   componentDidMount() {
     this.props.hideLoading();
   }
