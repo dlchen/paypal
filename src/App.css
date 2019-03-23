@@ -31,6 +31,7 @@ footer > div {
   padding: 0.5em;
   color: black;
   background-color: lightgray;
+  background-image: linear-gradient(white, lightgray);
   border-radius: 3px;
   box-shadow: 0 2px 1px darkgray;
 }
@@ -41,6 +42,7 @@ footer > a {
   padding: 0.5em;
   color: black;
   background-color: lightgray;
+  background-image: linear-gradient(white, lightgray);
   border-radius: 3px;
   box-shadow: 0 2px 1px darkgray;
 }

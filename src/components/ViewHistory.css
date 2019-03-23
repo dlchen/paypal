@@ -3,8 +3,8 @@ tr {
   justify-content: space-between;
 }
 
-tr:nth-child(even) {
-  background-color: #efebd7;
+tr:nth-child(odd) {
+  background-color: #eddfca;
 }
 
 td {
