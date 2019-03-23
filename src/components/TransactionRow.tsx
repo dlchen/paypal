@@ -1,14 +1,16 @@
 import React from 'react';
 
-interface Currency {
+type Currency = {
   [key: string]: string;
 }
 
 const symbol: Currency = {
-  'USD': '$'
+  USD: '$',
+  EUR: '€',
+  JPY: '¥'
 };
 
-interface TransactionProps {
+type TransactionProps = {
   date: string,
   amount: number,
   currency: string,
