@@ -88,7 +88,8 @@ class SendMoney extends PureComponent<Props, State> {
     });
   }
   submitForm() {
-    if (validEmail(this.state.email) && validAmount(this.state.amount)) {
+    const { email, amount, transactionType } = this.state;
+    if (validEmail(email) && validAmount(amount) && transactionType !== UNKNOWN) {
       this.props.showLoading();
       setTimeout(() => {
         this.props.hideLoading();
