@@ -119,9 +119,7 @@ class SendMoney extends PureComponent<Props, State> {
           handleMessageChange={this.handleMessageChange}
           handleOptionChange={this.handleOptionChange}
           resetForm={this.resetForm}
-          submitForm={this.submitForm}
-          showLoading={this.props.showLoading}
-          hideLoading={this.props.hideLoading} />}
+          submitForm={this.submitForm} />}
         {this.state.success && <Success
           currency={currency}
           amount={amount}

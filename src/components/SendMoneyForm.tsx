@@ -19,28 +19,41 @@ type Props = {
   handleMessageChange: (e: ChangeEvent<HTMLTextAreaElement>) => void,
   handleOptionChange: (e: ChangeEvent<HTMLInputElement>) => void,
   resetForm: () => void,
-  submitForm: () => void,
-  showLoading: () => void,
-  hideLoading: () => void
+  submitForm: () => void
 };
 
 class Form extends PureComponent<Props> {
 
   render() {
+    const {
+      validEmail,
+      email,
+      currency,
+      amount,
+      message,
+      transactionType,
+      handleEmailChange,
+      handleAmountChange,
+      handleCurrencySelect,
+      handleMessageChange,
+      handleOptionChange,
+      resetForm,
+      submitForm
+    } = this.props;
     return (
       <Fragment>
         <form id="send-money">
           <div className="email padded form-field">
             <span>To:</span>
-            <input type="email" value={this.props.email} onChange={this.props.handleEmailChange} autoFocus />
-            {this.props.validEmail === true && "✔︎"}
-            {this.props.validEmail === false && "✘"}
+            <input type="email" value={email} onChange={handleEmailChange} autoFocus />
+            {validEmail === true && "✅"}
+            {validEmail === false && "❌"}
           </div>
           <div className="amount padded form-field">
             <span>Amount:</span>
-            {renderCurrencySymbol(this.props.currency)}
-            <input type="text" value={this.props.amount} onChange={this.props.handleAmountChange} />
-            <select value={this.props.currency} onChange={this.props.handleCurrencySelect}>
+            {renderCurrencySymbol(currency)}
+            <input type="text" value={amount} onChange={handleAmountChange} />
+            <select value={currency} onChange={handleCurrencySelect}>
               <option value="USD">USD</option>
               <option value="EUR">EUR</option>
               <option value="JPY">JPY</option>
@@ -48,37 +61,37 @@ class Form extends PureComponent<Props> {
           </div>
           <div className="padded form-field">
             <span>Message (optional):</span>
-            <textarea value={this.props.message} onChange={this.props.handleMessageChange} />
+            <textarea value={message} onChange={handleMessageChange} />
           </div>
           <span>What's this payment for?</span>
           <div className="padded form-field radio">
             <label className="type">
-              <span className={this.props.transactionType === PERSONAL ? "selected" : ""}>
+              <span className={transactionType === PERSONAL ? "selected" : ""}>
                 I'm sending money to family or friends
               </span>
               <input
                 type="radio"
                 name="transactionType"
                 value={PERSONAL}
-                onChange={this.props.handleOptionChange}
-                checked={this.props.transactionType === PERSONAL} />
+                onChange={handleOptionChange}
+                checked={transactionType === PERSONAL} />
             </label>
             <label className="type">
-              <span className={this.props.transactionType === BUSINESS ? "selected" : ""}>
+              <span className={transactionType === BUSINESS ? "selected" : ""}>
                 I'm paying for goods or services
               </span>
               <input
                 type="radio"
                 name="transactionType"
                 value={BUSINESS}
-                onChange={this.props.handleOptionChange}
-                checked={this.props.transactionType === BUSINESS} />
+                onChange={handleOptionChange}
+                checked={transactionType === BUSINESS} />
             </label>
           </div>
         </form>
         <footer>
-          <div onClick={this.props.resetForm}>Clear</div>
-          <div onClick={this.props.submitForm}>Next</div>
+          <div onClick={resetForm}>Clear</div>
+          <div onClick={submitForm}>Next</div>
         </footer>
       </Fragment>
     );
