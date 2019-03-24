@@ -4,6 +4,8 @@ import Form from './SendMoneyForm';
 import Success from './SendMoneySuccess';
 import { validAmount, validEmail, formatAmount } from '../utils';
 
+import './SendMoney.css';
+
 type TransactionType = 'UNKNOWN' | 'PERSONAL' | 'BUSINESS';
 const UNKNOWN = 'UNKNOWN';
 const PERSONAL = 'PERSONAL';
@@ -22,6 +24,7 @@ type State = {
   amount: string,
   message: string,
   transactionType: TransactionType,
+  loading: boolean
 };
 
 class SendMoney extends PureComponent<Props, State> {
@@ -35,7 +38,8 @@ class SendMoney extends PureComponent<Props, State> {
       currency: 'USD',
       amount: '0.00',
       message: '',
-      transactionType: UNKNOWN
+      transactionType: UNKNOWN,
+      loading: false
     };
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -77,6 +81,9 @@ class SendMoney extends PureComponent<Props, State> {
       this.setState({ transactionType: type })
     }
   }
+  setLoading(boolean: boolean = false) {
+    this.setState({ loading: boolean });
+  }
   resetForm() {
     this.setState({
       validEmail: null,
@@ -87,14 +94,17 @@ class SendMoney extends PureComponent<Props, State> {
       transactionType: UNKNOWN
     });
   }
+  createTransaction() {
+    setTimeout(() => {
+      this.setLoading(false);
+      this.setState({ success: true });
+    }, 500);
+  }
   submitForm() {
     const { email, amount, transactionType } = this.state;
     if (validEmail(email) && validAmount(amount) && transactionType !== UNKNOWN) {
-      this.props.showLoading();
-      setTimeout(() => {
-        this.props.hideLoading();
-        this.setState({ success: true });
-      }, 500);
+      this.createTransaction();
+      this.setLoading(true);
     }
   }
   restart() {
@@ -102,9 +112,11 @@ class SendMoney extends PureComponent<Props, State> {
     this.setState({ success: false });
   }
   render() {
-    const { validEmail, email, currency, amount, message, transactionType } = this.state;
+    const { validEmail, email, currency, amount, message, transactionType, loading } = this.state;
     return (
       <div>
+        <div className={loading ? "overlay" : "overlay-hidden"} />
+        <div className={loading ? "spinner" : "spinner-hidden"} />
         <header>Send Money</header>
         {!this.state.success && <Form
           validEmail={validEmail}

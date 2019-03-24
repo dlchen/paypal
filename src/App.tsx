@@ -6,22 +6,13 @@ import Initial from './components/Initial';
 import SendMoney from './components/SendMoney';
 import ViewHistory from './components/ViewHistory';
 
-type Props = {
-  hideLoading: () => void;
-  showLoading: () => void;
-};
-
-class App extends Component<Props> {
-  componentDidMount() {
-    this.props.hideLoading();
-  }
+class App extends Component {
   render() {
-    const { hideLoading, showLoading } = this.props;
     return (
       <Router>
         <div>
           <Route path="/" exact component={Initial} />
-          <Route path="/send" render={(props) => <SendMoney {...props} hideLoading={hideLoading} showLoading={showLoading} />} />
+          <Route path="/send" component={SendMoney} />
           <Route path="/view" component={ViewHistory} />
         </div>
       </Router>
