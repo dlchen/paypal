@@ -13,7 +13,8 @@ type Transaction = {
 };
 
 type State = {
-  transactions: Array<Transaction>
+  transactions: Array<Transaction>,
+  page: number
 };
 
 class ViewHistory extends Component<{}, State> {
@@ -21,17 +22,42 @@ class ViewHistory extends Component<{}, State> {
     super(props);
 
     this.state = {
-      transactions: []
+      transactions: [],
+      page: 0
     };
+
+    this.handleOnScroll = this.handleOnScroll.bind(this);
   }
-  async componentDidMount() {
+  async getTransaction() {
     try {
-      const response = await fetch('/v1/transactions');
+      const response = await fetch(`/v1/transactions?page=${this.state.page}`);
       const data = await response.json();
-      this.setState(data);
+      if (data.transactions.length) {
+        this.setState({
+          transactions: this.state.transactions.concat(data.transactions),
+          page: this.state.page + 1
+        });
+      }
     }
     catch (error) {
       console.error(error);
+    }
+  }
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleOnScroll);
+    this.getTransaction();
+  }
+  componentWillMount() {
+    window.removeEventListener('scroll', this.handleOnScroll);
+  }
+  handleOnScroll() {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = document.documentElement.clientHeight;
+    const scrolledToBottom = scrollTop + clientHeight >= scrollHeight;
+
+    if (scrolledToBottom) {
+      this.getTransaction();
     }
   }
   render() {
