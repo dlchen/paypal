@@ -47,7 +47,7 @@ class ViewHistory extends Component<{}, State> {
     window.addEventListener('scroll', this.handleOnScroll);
     this.getTransaction();
   }
-  componentWillMount() {
+  componentWillUnmount() {
     window.removeEventListener('scroll', this.handleOnScroll);
   }
   handleOnScroll() {
